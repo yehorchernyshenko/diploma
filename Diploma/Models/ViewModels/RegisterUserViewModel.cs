@@ -19,9 +19,11 @@ namespace Diploma.Models.ViewModels
         [Display(Name = "Confirm password")]
         public string ConfirmPassword { get; set; }
 
+        [Display(Name = "First Name")]
         [Required(AllowEmptyStrings = false)]
         public string FirstName { get; set; }
 
+        [Display(Name = "Last Name")]
         [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
     }

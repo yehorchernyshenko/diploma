@@ -15,10 +15,10 @@ namespace Diploma.Models
         {
         }
 
-        public DbSet<Route> Routes { get; set; }
+        public virtual DbSet<Route> Routes { get; set; }
 
-        public DbSet<RouteInfo> RouteInfo { get; set; }
+        public virtual DbSet<RouteInfo> RouteInfo { get; set; }
 
-        public DbSet<DriverCar> DriverCars { get; set; }
+        public virtual DbSet<DriverCar> DriverCars { get; set; }
     }
 }

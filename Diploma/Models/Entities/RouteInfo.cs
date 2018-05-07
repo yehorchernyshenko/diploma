@@ -10,9 +10,9 @@ namespace Diploma.Models.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public User User { get; set; }
+        public virtual User User { get; set; }
 
-        public Route Route { get; set; }
+        public virtual Route Route { get; set; }
 
         public bool IsDriver { get; set; }
 

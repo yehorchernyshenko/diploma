@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Diploma.Models.Entities.RouteInfo>
+
+@{
+    ViewData["Title"] = "User Created Routes";
+}
+
+<h2>User Created Routes</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.DepartureTime)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Route.From)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Route.To)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Route.DepartureTime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

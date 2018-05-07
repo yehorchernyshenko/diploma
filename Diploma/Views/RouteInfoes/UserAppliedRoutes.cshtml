@@ -1,35 +1,32 @@
 ﻿@model IEnumerable<Diploma.Models.Entities.RouteInfo>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "User Applied Routes";
 }
 
-<h2>Index</h2>
+<h2>User Applied Routes</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.User.FirstName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User.LastName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.User.IsAccountVerified)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Route.From)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Route.To)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Route.DepartureTime)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.IsAccountVerified)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.From)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.To)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Route.DepartureTime)
+            </th>
             <th></th>
         </tr>
     </thead>

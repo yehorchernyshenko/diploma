@@ -24,11 +24,84 @@ namespace Diploma.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetAvailableRoutesList()
         {
-            var routeInfoesList = await _context.RouteInfo.ToListAsync();
+            var currentUserId = User.Identity.GetUserId();
 
-            return View(routeInfoesList);
+            var appliedUserRouteInfoesId = await GetUserAppliedRoutesIds();
+
+            var routeInfoesList = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
+                .Where(routeInfo => routeInfo.User.Id != currentUserId
+                        && routeInfo.IsDriver == true
+                        && !appliedUserRouteInfoesId.Contains(routeInfo.Route.Id))
+                .ToListAsync();
+
+            return View("Index", routeInfoesList);
+        }
+
+        private async Task<List<Guid>> GetUserAppliedRoutesIds()
+        {
+            var currentUserId = User.Identity.GetUserId();
+
+            var appliedUserRouteInfoesId = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
+                .Where(routeInfo => routeInfo.User.Id == currentUserId
+                        && routeInfo.IsPassenger == true)
+                 .Select(item => item.Id)
+                .ToListAsync();
+
+            return appliedUserRouteInfoesId;
+        }
+
+        public async Task<IActionResult> GetUserAppliedRoutesList()
+        {
+            var appliedUserRouteInfoesId = await GetUserAppliedRoutesIds();
+
+            var appliedUserRouteInfoesList = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
+                .Where(routeInfo => appliedUserRouteInfoesId.Contains(routeInfo.Id)
+                                    && routeInfo.IsPassenger == true)
+                .ToListAsync();
+
+            return View("Index", appliedUserRouteInfoesList);
+        }
+
+        public async Task<IActionResult> GetUserCreatedRoutesList()
+        {
+            var currentUserId = User.Identity.GetUserId();
+
+            var userRouteInfoesList = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
+                .Where(routeInfo => routeInfo.User.Id == currentUserId
+                        && routeInfo.IsDriver == true)
+                .ToListAsync();
+
+            return View("UserCreatedRoutes", userRouteInfoesList);
+        }
+
+        public async Task<IActionResult> ApplyForRoute(Guid? routeId)
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var currentUser = _context.Users.FirstOrDefault(user => user.Id == currentUserId);
+
+            var appliedRoute = _context.Routes.FirstOrDefault(route => route.Id == routeId);
+
+            var routeInfo = new RouteInfo
+            {
+                IsPassenger = true,
+                User = currentUser,
+                Route = appliedRoute
+            };
+
+            _context.RouteInfo.Add(routeInfo);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("GetUserAppliedRoutesList");
         }
 
         public async Task<IActionResult> Details(Guid? id)
@@ -39,6 +112,8 @@ namespace Diploma.Controllers
             }
 
             var routeInfo = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             if (routeInfo == null)
@@ -87,7 +162,7 @@ namespace Diploma.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return RedirectToAction("Index");
+                return View("../Home/Index");
             }
             return View(addRouteViewModel);
         }
@@ -111,7 +186,7 @@ namespace Diploma.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,IsDriver,IsPassenger")] RouteInfo routeInfo)
+        public async Task<IActionResult> Edit(Guid id, RouteInfo routeInfo)
         {
             if (id != routeInfo.Id)
             {
@@ -137,7 +212,7 @@ namespace Diploma.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View("../Home/Index");
             }
             return View(routeInfo);
         }
@@ -168,7 +243,7 @@ namespace Diploma.Controllers
 
             await _context.SaveChangesAsync();
 
-            return RedirectToAction(nameof(Index));
+            return View("../Home/Index");
         }
 
         private bool RouteInfoExists(Guid id)

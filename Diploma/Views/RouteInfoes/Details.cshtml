@@ -1,4 +1,5 @@
-﻿@model Diploma.Models.Entities.RouteInfo
+﻿@using Microsoft.AspNet.Identity
+@model Diploma.Models.Entities.RouteInfo
 
 @{
     ViewData["Title"] = "Details";
@@ -7,24 +8,66 @@
 <h2>Details</h2>
 
 <div>
-    <h4>RouteInfo</h4>
+    <h4>Route Info</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.IsDriver)
+            @Html.DisplayNameFor(model => model.User.FirstName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsDriver)
+            @Html.DisplayFor(model => model.User.FirstName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.IsPassenger)
+            @Html.DisplayNameFor(model => model.User.LastName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.IsPassenger)
+            @Html.DisplayFor(model => model.User.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.DepartureTime)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.DepartureTime)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.From)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.From)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.To)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.To)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.Currency)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.Currency)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.Price)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.Price)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.RouteLength)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.RouteLength)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (Model.IsPassenger == false && Model.User.Id != User.Identity.GetUserId())
+    {
+        <a asp-action="ApplyForRoute" asp-route-routeId="@Model.Route.Id">Apply for route</a>
+        <br/>
+    }
+    
+    <a asp-action="GetAvailableRoutesList">Back to List</a>
+
 </div>
