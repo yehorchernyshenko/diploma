@@ -1,6 +1,4 @@
-using System;
-
-namespace Diploma.Models
+namespace Diploma.Models.ViewModels
 {
     public class ErrorViewModel
     {

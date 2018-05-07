@@ -34,7 +34,9 @@ namespace Diploma.Migrations
                     Email = table.Column<string>(maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     FacebookProfileLink = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: true),
                     IsAccountVerified = table.Column<bool>(nullable: false),
+                    LastName = table.Column<string>(nullable: true),
                     LinkedinProfileLink = table.Column<string>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
@@ -158,6 +160,77 @@ namespace Diploma.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DriverCars",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CarModel = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverCars", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DriverCars_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Routes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    CarId = table.Column<Guid>(nullable: true),
+                    Currency = table.Column<int>(nullable: false),
+                    DepartureTime = table.Column<DateTime>(nullable: false),
+                    From = table.Column<string>(nullable: false),
+                    Price = table.Column<int>(nullable: false),
+                    RouteLength = table.Column<double>(nullable: false),
+                    RouteStatus = table.Column<int>(nullable: false),
+                    To = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Routes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Routes_DriverCars_CarId",
+                        column: x => x.CarId,
+                        principalTable: "DriverCars",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RouteInfo",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    IsDriver = table.Column<bool>(nullable: false),
+                    IsPassenger = table.Column<bool>(nullable: false),
+                    RouteId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RouteInfo", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RouteInfo_Routes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_RouteInfo_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -196,6 +269,26 @@ namespace Diploma.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverCars_UserId",
+                table: "DriverCars",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RouteInfo_RouteId",
+                table: "RouteInfo",
+                column: "RouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RouteInfo_UserId",
+                table: "RouteInfo",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_CarId",
+                table: "Routes",
+                column: "CarId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -216,7 +309,16 @@ namespace Diploma.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "RouteInfo");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Routes");
+
+            migrationBuilder.DropTable(
+                name: "DriverCars");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

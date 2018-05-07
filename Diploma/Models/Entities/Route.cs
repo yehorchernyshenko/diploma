@@ -19,7 +19,6 @@ namespace Diploma.Models.Entities
         public string To { get; set; }
 
         [Required]
-        [Display(Name = "Departure time")]
         public DateTime DepartureTime { get; set; }
 
         [Required]

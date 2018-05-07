@@ -14,5 +14,11 @@ namespace Diploma.Models
             : base(options)
         {
         }
+
+        public DbSet<Route> Routes { get; set; }
+
+        public DbSet<RouteInfo> RouteInfo { get; set; }
+
+        public DbSet<DriverCar> DriverCars { get; set; }
     }
 }

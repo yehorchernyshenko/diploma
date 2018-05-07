@@ -14,6 +14,6 @@ namespace Diploma.Models.Entities
 
         public string CarModel { get; set; }
 
-        public DateTime LastModificationDate { get; set; }
+        public DateTime LastModificationDate = DateTime.Now;
     }
 }
