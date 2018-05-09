@@ -116,18 +116,13 @@ namespace Diploma.Controllers
                 .Include(context => context.Route)
                 .SingleOrDefaultAsync(routeInfoItem => routeInfoItem.Id == id);
 
-            var passengersRoutesList = await _context.RouteInfo
-                .Include(context => context.Route)
-                .Where(routeInfoItem =>
-                        routeInfoItem.IsPassenger == true 
-                            && routeInfoItem.Route.Id == routeInfo.Route.Id).ToListAsync();
-
-            ViewData["AvailablePlaces"] = routeInfo.Route.Capacity - passengersRoutesList.Count;
-
             if (routeInfo == null)
             {
                 return NotFound();
             }
+
+            ViewData["AvailablePlaces"] =
+                routeInfo.Route.Capacity - await GetCountOfAppliedUsers(routeInfo.Route.Id);
 
             return View(routeInfo);
         }
@@ -183,11 +178,21 @@ namespace Diploma.Controllers
                 return NotFound();
             }
 
-            var routeInfo = await _context.RouteInfo.SingleOrDefaultAsync(m => m.Id == id);
+            var routeInfo = await _context.RouteInfo
+                .Include(item => item.Route)
+                .Include(item => item.User)
+                .SingleOrDefaultAsync(m => m.Id == id);
 
             if (routeInfo == null)
             {
                 return NotFound();
+            }
+
+            var currentUserId = User.Identity.GetUserId();
+
+            if (routeInfo.User.Id != currentUserId)
+            {
+                return View("Error", new ErrorViewModel{ErrorMessage = "You can`t edit not your route!"});
             }
 
             return View(routeInfo);
@@ -247,12 +252,33 @@ namespace Diploma.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var routeInfo = await _context.RouteInfo.SingleOrDefaultAsync(m => m.Id == id);
+            var routeInfo = await _context.RouteInfo
+                .Include(item => item.User)
+                .SingleOrDefaultAsync(m => m.Id == id);
+
+            var currentUserId = User.Identity.GetUserId();
+
+            if (routeInfo.User.Id != currentUserId)
+            {
+                return View("Error", new ErrorViewModel { ErrorMessage = "You can`t delete not your route!" });
+            }
+
             _context.RouteInfo.Remove(routeInfo);
 
             await _context.SaveChangesAsync();
 
             return View("../Home/Index");
+        }
+
+        private async Task<int> GetCountOfAppliedUsers(Guid routeId)
+        {
+            var passengersRoutesList = await _context.RouteInfo
+                .Include(context => context.Route)
+                .Where(routeInfoItem =>
+                    routeInfoItem.IsPassenger == true
+                    && routeInfoItem.Route.Id == routeId).ToListAsync();
+
+            return passengersRoutesList.Count;
         }
 
         private bool RouteInfoExists(Guid id)
