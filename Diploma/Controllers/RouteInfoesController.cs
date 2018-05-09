@@ -114,7 +114,15 @@ namespace Diploma.Controllers
             var routeInfo = await _context.RouteInfo
                 .Include(context => context.User)
                 .Include(context => context.Route)
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(routeInfoItem => routeInfoItem.Id == id);
+
+            var passengersRoutesList = await _context.RouteInfo
+                .Include(context => context.Route)
+                .Where(routeInfoItem =>
+                        routeInfoItem.IsPassenger == true 
+                            && routeInfoItem.Route.Id == routeInfo.Route.Id).ToListAsync();
+
+            ViewData["AvailablePlaces"] = routeInfo.Route.Capacity - passengersRoutesList.Count;
 
             if (routeInfo == null)
             {
@@ -146,6 +154,7 @@ namespace Diploma.Controllers
                     RouteLength = addRouteViewModel.RouteLength,
                     Price = addRouteViewModel.Price,
                     RouteStatus = RouteStatus.Pending,
+                    Capacity = addRouteViewModel.Capacity,
                     DepartureTime = new DateTime(addRouteViewModel.DepartureDate.Year,
                         addRouteViewModel.DepartureDate.Month, addRouteViewModel.DepartureDate.Day,
                         addRouteViewModel.DepartureTime.Hour, addRouteViewModel.DepartureTime.Minute, 0)

@@ -34,5 +34,8 @@ namespace Diploma.Models.Entities
         public virtual DriverCar Car { get; set; }
 
         public double RouteLength { get; set; }
+
+        [Range(1, int.MaxValue)]
+        public int Capacity { get; set; }
     }
 }
