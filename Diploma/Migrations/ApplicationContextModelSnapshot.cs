@@ -42,6 +42,8 @@ namespace Diploma.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("Capacity");
+
                     b.Property<Guid?>("CarId");
 
                     b.Property<int>("Currency");

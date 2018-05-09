@@ -59,6 +59,18 @@
         <dd>
             @Html.DisplayFor(model => model.Route.RouteLength)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Route.Capacity)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Route.Capacity)
+        </dd>
+        <dt>
+            Available places:
+        </dt>
+        <dd>
+            ViewData["AvailablePlaces"]
+        </dd>
     </dl>
 </div>
 <div>
