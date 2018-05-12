@@ -6,7 +6,6 @@ namespace Diploma.Models.ViewModels
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]

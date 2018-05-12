@@ -2,31 +2,46 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Diploma.Models;
 using Diploma.Models.Entities;
 using Diploma.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Diploma.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
+        private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly ApplicationContext _context;
+        private readonly IMapper _mapper;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(Microsoft.AspNetCore.Identity.UserManager<User> userManager,
+                                 SignInManager<User> signInManager,
+                                 ApplicationContext context,
+                                 IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterUserViewModel model)
         {
             if (ModelState.IsValid)
@@ -59,12 +74,14 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             return View(new LoginViewModel { ReturnUrl = returnUrl });
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
@@ -99,6 +116,41 @@ namespace Diploma.Controllers
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AccountDetails()
+        {
+            var userId = User.Identity.GetUserId();
+
+            var user = await _context.User.FirstAsync(item => item.Id == userId);
+
+            var accountDetailsViewModel = _mapper.Map<User, AccountDetailsViewModel>(user);
+
+            return View("AccountDetailsEdit", accountDetailsViewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateAccountDetails(AccountDetailsViewModel accountDetailsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _context.User.FirstAsync(item => item.Id == User.Identity.GetUserId());
+
+                user.FirstName = accountDetailsViewModel.FirstName;
+                user.LastName = accountDetailsViewModel.LastName;
+                user.Email = accountDetailsViewModel.Email;
+                user.FacebookProfileLink = accountDetailsViewModel.FacebookProfileLink;
+                user.LinkedinProfileLink = accountDetailsViewModel.LinkedinProfileLink;
+                user.BirthdayDate = accountDetailsViewModel.BirthdayDate;
+                user.PhoneNumber = accountDetailsViewModel.PhoneNumber;
+                user.SecurityStamp = Guid.NewGuid().ToString();
+
+                await _userManager.UpdateAsync(user);
+            }  
+
+            return View("AccountDetailsEdit", accountDetailsViewModel);
         }
     }
 }

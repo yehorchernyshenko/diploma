@@ -20,5 +20,7 @@ namespace Diploma.Models
         public virtual DbSet<RouteInfo> RouteInfo { get; set; }
 
         public virtual DbSet<DriverCar> DriverCars { get; set; }
+
+        public DbSet<Diploma.Models.Entities.User> User { get; set; }
     }
 }

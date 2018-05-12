@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Diploma.Models;
 using Diploma.Models.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -41,6 +42,8 @@ namespace Diploma
             .AddDefaultTokenProviders();
 
             services.AddMvc();
+
+            services.AddAutoMapper();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

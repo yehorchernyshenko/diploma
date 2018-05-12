@@ -5,7 +5,9 @@
 @if (User.Identity.IsAuthenticated)
 {
     <p>Hello, @User.Identity.Name!</p>
-
+    
+    <a asp-area="" asp-controller="Account" asp-action="AccountDetails">Account Details</a>
+    <br>
     <a asp-area="" asp-controller="RouteInfoes" asp-action="GetAvailableRoutesList">List of available routes</a>
     <br>
     <a asp-area="" asp-controller="RouteInfoes" asp-action="GetUserCreatedRoutesList">Your created routes</a>
