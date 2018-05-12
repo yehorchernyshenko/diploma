@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Diploma.Models.Enums;
 
 namespace Diploma.Models.Entities
 {
@@ -17,5 +18,7 @@ namespace Diploma.Models.Entities
         public bool IsDriver { get; set; }
 
         public bool IsPassenger { get; set; }
+
+        public RouteApplicationStatus RouteApplicationStatus { get; set; }
     }
 }

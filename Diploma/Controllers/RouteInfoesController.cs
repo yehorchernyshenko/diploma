@@ -95,7 +95,8 @@ namespace Diploma.Controllers
             {
                 IsPassenger = true,
                 User = currentUser,
-                Route = appliedRoute
+                Route = appliedRoute,
+                RouteApplicationStatus = RouteApplicationStatus.Pending
             };
 
             _context.RouteInfo.Add(routeInfo);
