@@ -130,6 +130,16 @@ namespace Diploma.Controllers
             return View("AccountDetailsEdit", accountDetailsViewModel);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> UserAccountDetails(Guid userId)
+        {
+            var user = await _context.User.FirstAsync(item => item.Id == userId.ToString());
+
+            var accountDetailsViewModel = _mapper.Map<User, AccountDetailsViewModel>(user);
+
+            return View("UserAccountDetails", accountDetailsViewModel);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateAccountDetails(AccountDetailsViewModel accountDetailsViewModel)
@@ -148,6 +158,8 @@ namespace Diploma.Controllers
                 user.SecurityStamp = Guid.NewGuid().ToString();
 
                 await _userManager.UpdateAsync(user);
+
+                ViewBag.UpdateSuccessful = true;
             }  
 
             return View("AccountDetailsEdit", accountDetailsViewModel);

@@ -67,7 +67,7 @@ namespace Diploma.Controllers
                                     && routeInfo.IsPassenger == true)
                 .ToListAsync();
 
-            return View("Index", appliedUserRouteInfoesList);
+            return View("UserAppliedRoutes", appliedUserRouteInfoesList);
         }
 
         public async Task<IActionResult> GetUserCreatedRoutesList()

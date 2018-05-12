@@ -6,17 +6,17 @@
 {
     <p>Hello, @User.Identity.Name!</p>
     
-    <a asp-area="" asp-controller="Account" asp-action="AccountDetails">Account Details</a>
+    <a asp-controller="Account" asp-action="AccountDetails">Account Details</a>
     <br>
-    <a asp-area="" asp-controller="RouteInfoes" asp-action="GetAvailableRoutesList">List of available routes</a>
+    <a asp-controller="RouteInfoes" asp-action="GetAvailableRoutesList">List of available routes</a>
     <br>
-    <a asp-area="" asp-controller="RouteInfoes" asp-action="GetUserCreatedRoutesList">Your created routes</a>
+    <a asp-controller="RouteInfoes" asp-action="GetUserCreatedRoutesList">Your created routes</a>
     <br>
-    <a asp-area="" asp-controller="RouteInfoes" asp-action="GetUserAppliedRoutesList">Your applied routes</a>
+    <a asp-controller="RouteInfoes" asp-action="GetUserAppliedRoutesList">Your applied routes</a>
     <br>
-    <a asp-area="" asp-controller="RouteInfoes" asp-action="Create">Create new route</a>
+    <a asp-controller="RouteInfoes" asp-action="Create">Create new route</a>
     <br>
     <form method="post" asp-controller="Account" asp-action="LogOff">
-        <input type="submit" value="LogOff" />
+        <input type="submit" value="Log Off" />
     </form>
 }

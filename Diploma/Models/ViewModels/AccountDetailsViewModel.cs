@@ -35,5 +35,11 @@ namespace Diploma.Models.ViewModels
         [Display(Name = "Phone Number")]
         [Phone]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "Phone Confirmed")]
+        public bool PhoneNumberConfirmed { get; set; }
+
+        [Display(Name = "Email Confirmed")]
+        public bool EmailConfirmed { get; set; }
     }
 }

@@ -10,6 +10,9 @@
     <thead>
         <tr>
             <th>
+                Driver profile details link
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.User.FirstName)
             </th>
             <th>
@@ -34,7 +37,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.User.FirstName)
+                <a class="btn btn-default" asp-controller="Account" asp-action="UserAccountDetails" asp-route-userId="@item.User.Id">Driver Profile Info</a>
+            </td>
+            <td>
+               @Html.DisplayFor(modelItem => item.User.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.LastName)
