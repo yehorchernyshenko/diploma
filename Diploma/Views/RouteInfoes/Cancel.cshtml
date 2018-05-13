@@ -11,9 +11,9 @@
     <h4>RouteInfo</h4>
     <hr />
     
-    <form asp-action="Delete">
+    <form asp-action="Cancel">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-default" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Cancel" class="btn btn-default" />
+        <a asp-action="Index" asp-controller="Home">Back to List</a>
     </form>
 </div>

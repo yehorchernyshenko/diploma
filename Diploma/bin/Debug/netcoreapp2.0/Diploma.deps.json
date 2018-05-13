@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "4471f3ecb17dc596216480e1e79ae70639db601f"
+    "signature": "08be268204f03fb01204d41b16b7b67de0f2f20b"
   },
   "compilationOptions": {
     "defines": [
@@ -25,6 +25,7 @@
         "dependencies": {
           "AutoMapper": "6.2.2",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "3.2.0",
+          "CompareNETObjects": "4.53.0",
           "Microsoft.AspNet.Identity.Core": "2.2.1",
           "Microsoft.AspNetCore.All": "2.0.6",
           "Microsoft.NETCore.App": "2.0.0",
@@ -69,6 +70,14 @@
         },
         "compile": {
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
+        }
+      },
+      "CompareNETObjects/4.53.0": {
+        "runtime": {
+          "lib/netstandard1.3/KellermanSoftware.Compare-NET-Objects-Core.dll": {}
+        },
+        "compile": {
+          "lib/netstandard1.3/KellermanSoftware.Compare-NET-Objects-Core.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -4295,6 +4304,13 @@
       "sha512": "sha512-528nEpAwniNn8Z6Ae9qTiM/kN4f0BxmWE9mDMEkqKKGxbuElmv6Kj9DVvTXECJkIt6ARerb9+vYbOifNpcwvXQ==",
       "path": "automapper.extensions.microsoft.dependencyinjection/3.2.0",
       "hashPath": "automapper.extensions.microsoft.dependencyinjection.3.2.0.nupkg.sha512"
+    },
+    "CompareNETObjects/4.53.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-HOOPZWyS0zZUNe0M7/7UUaAnuXwlgkik5ZQC7xpdzXkbK++NTKn44AMtsmMvZyAFPXjXXMVRPe2cHAeNZ8uhGQ==",
+      "path": "comparenetobjects/4.53.0",
+      "hashPath": "comparenetobjects.4.53.0.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",

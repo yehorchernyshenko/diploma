@@ -1,5 +1,6 @@
-﻿@using Microsoft.AspNet.Identity
-@model Diploma.Models.Entities.RouteInfo
+﻿@using Diploma.Models.Enums
+@using Microsoft.AspNet.Identity
+@model Diploma.Models.ViewModels.RouteDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -9,77 +10,138 @@
 
 <div>
     <h4>Route Info</h4>
-    <hr />
+    <hr/>
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.User.FirstName)
+            @Html.DisplayNameFor(model => model.RouteInfo.User.FirstName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.FirstName)
+            @Html.DisplayFor(model => model.RouteInfo.User.FirstName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.User.LastName)
+            @Html.DisplayNameFor(model => model.RouteInfo.User.LastName)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.User.LastName)
+            @Html.DisplayFor(model => model.RouteInfo.User.LastName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.DepartureTime)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.DepartureTime)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.DepartureTime)
+            @Html.DisplayFor(model => model.RouteInfo.Route.DepartureTime)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.From)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.From)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.From)
+            @Html.DisplayFor(model => model.RouteInfo.Route.From)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.To)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.To)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.To)
+            @Html.DisplayFor(model => model.RouteInfo.Route.To)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.Currency)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.Currency)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.Currency)
+            @Html.DisplayFor(model => model.RouteInfo.Route.Currency)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.Price)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.Price)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.Price)
+            @Html.DisplayFor(model => model.RouteInfo.Route.Price)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.RouteLength)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.RouteLength)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.RouteLength)
+            @Html.DisplayFor(model => model.RouteInfo.Route.RouteLength)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Route.Capacity)
+            @Html.DisplayNameFor(model => model.RouteInfo.Route.Capacity)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Route.Capacity)
+            @Html.DisplayFor(model => model.RouteInfo.Route.Capacity)
         </dd>
         <dt>
             Available places
         </dt>
         <dd>
-            @ViewData["AvailablePlaces"]
+            @Model.AvailablePlaces
         </dd>
     </dl>
 </div>
 <div>
-    @if (Model.IsPassenger == false && Model.User.Id != User.Identity.GetUserId())
+    @if (Model.RouteInfo.IsPassenger == false && Model.RouteInfo.User.Id != User.Identity.GetUserId())
     {
-        <a asp-action="ApplyForRoute" asp-route-routeId="@Model.Route.Id">Apply for route</a>
+        <a asp-action="ApplyForRoute" asp-route-routeId="@Model.RouteInfo.Route.Id">Apply for route</a>
         <br/>
     }
-    
-    <a asp-action="GetAvailableRoutesList">Back to List</a>
+    else if (Model.RouteInfo.IsDriver == true && Model.RouteInfo.User.Id == User.Identity.GetUserId())
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Passenger profile details link</th>
+                <th>Passenger name</th>
+                <th>Account Verified</th>
+                <th>Route Application Status</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var passengerRouteInfo in Model.PassengersApplications) {
+                <tr>
+                    <td>
+                        <a class="btn btn-default" asp-controller="Account" asp-action="UserAccountDetails" asp-route-userId="@passengerRouteInfo.User.Id">Passenger Profile Info</a>
+                    </td>
+                    <td>
+                        @passengerRouteInfo.User.FirstName @passengerRouteInfo.User.LastName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => passengerRouteInfo.User.IsAccountVerified)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => passengerRouteInfo.RouteApplicationStatus)
+                    </td>
+                    <td>
+                        @if (new[] { RouteApplicationStatus.Pending, RouteApplicationStatus.Cancelled }
+                            .Contains(passengerRouteInfo.RouteApplicationStatus)) {
+                            <form asp-action="ChangePassengerApplicationStatus">
+                                @Html.AntiForgeryToken()
+                                <input id="userId" name="userId" value="@passengerRouteInfo.User.Id" type="hidden" />
+                                <input id="routeId" name="routeId" value="@Model.RouteInfo.Route.Id" type="hidden" />
+                                <input id="routeApplicationStatus" name="routeApplicationStatus" value="Approved" type="hidden" />
+                                <div class="form-group">
+                                    <input type="submit" value="Approve Application" class="btn btn-default" />
+                                </div>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        @if (new[] { RouteApplicationStatus.Pending, RouteApplicationStatus.Approved }
+                             .Contains(passengerRouteInfo.RouteApplicationStatus)) {
+                            <form asp-action="ChangePassengerApplicationStatus">
+                                @Html.AntiForgeryToken()
+                                <input id="userId" name="userId" value="@passengerRouteInfo.User.Id" type="hidden" />
+                                <input id="routeId" name="routeId" value="@Model.RouteInfo.Route.Id" type="hidden" />
+                                <input id="routeApplicationStatus" name="routeApplicationStatus" value="Cancelled" type="hidden" />
+                                <div class="form-group">
+                                    <input type="submit" value="Cancel Application" class="btn btn-default" />
+                                </div>
+                            </form>
+                         }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    }
+
+    <a asp-action="GetUserCreatedRoutesList">Back to List</a>
 
 </div>

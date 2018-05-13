@@ -122,10 +122,14 @@ namespace Diploma.Controllers
                 return NotFound();
             }
 
-            ViewData["AvailablePlaces"] =
-                routeInfo.Route.Capacity - await GetCountOfAppliedUsers(routeInfo.Route.Id);
+            var routeDetailsViewModel = new RouteDetailsViewModel
+            {
+                RouteInfo = routeInfo,
+                AvailablePlaces = routeInfo.Route.Capacity - await GetCountOfAppliedUsers(routeInfo.Route.Id),
+                PassengersApplications = await GetPassengersRouteApplicationsList(routeInfo.Route.Id)
+            };  
 
-            return View(routeInfo);
+            return View(routeDetailsViewModel);
         }
 
         public IActionResult Create()
@@ -201,6 +205,23 @@ namespace Diploma.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ChangePassengerApplicationStatus(Guid userId, Guid routeId, RouteApplicationStatus routeApplicationStatus)
+        {
+            var routeInfo = await _context.RouteInfo
+                .Include(item => item.User)
+                .Include(item => item.Route)
+                .Where(item => item.Route.Id == routeId
+                               && item.User.Id == userId.ToString()).SingleAsync();
+
+            routeInfo.RouteApplicationStatus = routeApplicationStatus;
+
+            await _context.SaveChangesAsync();
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, RouteInfo routeInfo)
         {
             if (id != routeInfo.Id)
@@ -232,7 +253,7 @@ namespace Diploma.Controllers
             return View(routeInfo);
         }
 
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Cancel(Guid? id)
         {
             if (id == null)
             {
@@ -251,7 +272,7 @@ namespace Diploma.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Cancel(Guid id)
         {
             var routeInfo = await _context.RouteInfo
                 .Include(item => item.User)
@@ -264,22 +285,55 @@ namespace Diploma.Controllers
                 return View("Error", new ErrorViewModel { ErrorMessage = "You can`t delete not your route!" });
             }
 
-            _context.RouteInfo.Remove(routeInfo);
+            var countOfAppliedUsers = await GetCountOfAppliedUsers(routeInfo.Route.Id);
+            var appliedPassengersRoutesList = await GetAppliedPassengersList(routeInfo.Route.Id);
+            appliedPassengersRoutesList.Add(routeInfo);
+
+            if (countOfAppliedUsers > 0)
+            {
+                foreach (var routeInfoItem in appliedPassengersRoutesList)
+                {
+                    routeInfoItem.RouteApplicationStatus = RouteApplicationStatus.Cancelled;
+                }
+            } else {
+                _context.RouteInfo.Remove(routeInfo);
+            }
 
             await _context.SaveChangesAsync();
 
             return View("../Home/Index");
         }
 
-        private async Task<int> GetCountOfAppliedUsers(Guid routeId)
+        private async Task<List<RouteInfo>> GetAppliedPassengersList(Guid routeId)
         {
             var passengersRoutesList = await _context.RouteInfo
                 .Include(context => context.Route)
                 .Where(routeInfoItem =>
                     routeInfoItem.IsPassenger == true
-                    && routeInfoItem.Route.Id == routeId).ToListAsync();
+                    && routeInfoItem.Route.Id == routeId
+                    && routeInfoItem.RouteApplicationStatus == RouteApplicationStatus.Approved)
+                .ToListAsync();
 
-            return passengersRoutesList.Count;
+            return passengersRoutesList;
+        }
+
+        private async Task<int> GetCountOfAppliedUsers(Guid routeId)
+        {
+            var approvedPassengerList = await GetAppliedPassengersList(routeId);
+
+            return approvedPassengerList.Count;
+        }
+
+        private async Task<List<RouteInfo>> GetPassengersRouteApplicationsList(Guid routeId)
+        {
+            var passengersRouteApplicationsList = await _context.RouteInfo
+                .Include(context => context.User)
+                .Include(context => context.Route)
+                .Where(routeInfo => routeInfo.Route.Id == routeId
+                                      && routeInfo.IsPassenger == true)
+                .ToListAsync();
+
+            return passengersRouteApplicationsList;
         }
 
         private bool RouteInfoExists(Guid id)

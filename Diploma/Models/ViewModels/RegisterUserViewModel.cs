@@ -25,5 +25,9 @@ namespace Diploma.Models.ViewModels
         [Display(Name = "Last Name")]
         [Required(AllowEmptyStrings = false)]
         public string LastName { get; set; }
+
+        [Display(Name = "Phone Number")]
+        [Phone]
+        public string PhoneNumber { get; set; }
     }
 }
