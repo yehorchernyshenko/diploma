@@ -50,7 +50,7 @@ namespace Diploma.Controllers
                 .Include(context => context.Route)
                 .Where(routeInfo => routeInfo.User.Id == currentUserId
                         && routeInfo.IsPassenger == true)
-                 .Select(item => item.Id)
+                 .Select(item => item.Route.Id)
                 .ToListAsync();
 
             return appliedUserRouteInfoesId;
@@ -63,7 +63,7 @@ namespace Diploma.Controllers
             var appliedUserRouteInfoesList = await _context.RouteInfo
                 .Include(context => context.User)
                 .Include(context => context.Route)
-                .Where(routeInfo => appliedUserRouteInfoesId.Contains(routeInfo.Id)
+                .Where(routeInfo => appliedUserRouteInfoesId.Contains(routeInfo.Route.Id)
                                     && routeInfo.IsPassenger == true)
                 .ToListAsync();
 
