@@ -78,7 +78,8 @@ namespace Diploma.Controllers
                 .Include(context => context.User)
                 .Include(context => context.Route)
                 .Where(routeInfo => routeInfo.User.Id == currentUserId
-                        && routeInfo.IsDriver == true)
+                        && routeInfo.IsDriver == true
+                        && routeInfo.RouteApplicationStatus != RouteApplicationStatus.Cancelled)
                 .ToListAsync();
 
             return View("UserCreatedRoutes", userRouteInfoesList);
@@ -290,10 +291,9 @@ namespace Diploma.Controllers
             var appliedPassengersRoutesList = await GetAppliedPassengersList(routeInfo.Route.Id);
             appliedPassengersRoutesList.Add(routeInfo);
 
-            if (countOfAppliedUsers > 0)
+            if (countOfAppliedUsers > 1)
             {
-                foreach (var routeInfoItem in appliedPassengersRoutesList)
-                {
+                foreach (var routeInfoItem in appliedPassengersRoutesList) {
                     routeInfoItem.RouteApplicationStatus = RouteApplicationStatus.Cancelled;
                 }
             } else {
