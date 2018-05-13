@@ -276,6 +276,7 @@ namespace Diploma.Controllers
         {
             var routeInfo = await _context.RouteInfo
                 .Include(item => item.User)
+                .Include(item => item.Route)
                 .SingleOrDefaultAsync(m => m.Id == id);
 
             var currentUserId = User.Identity.GetUserId();
