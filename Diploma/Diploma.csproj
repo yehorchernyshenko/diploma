@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20180519135029_AddedCommentColumn.cs" />
+    <Compile Remove="Migrations\20180519135029_AddedCommentColumn.Designer.cs" />
+    <Compile Remove="Migrations\20180519135328_AddedCommentColumn.cs" />
+    <Compile Remove="Migrations\20180519135328_AddedCommentColumn.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="6.2.2" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
     <PackageReference Include="CompareNETObjects" Version="4.53.0" />

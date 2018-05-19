@@ -35,6 +35,8 @@ namespace Diploma.Models.Entities
 
         public double RouteLength { get; set; }
 
+        public string Comment { get; set; }
+
         [Range(1, int.MaxValue)]
         public int Capacity { get; set; }
     }

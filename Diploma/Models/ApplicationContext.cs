@@ -21,6 +21,8 @@ namespace Diploma.Models
 
         public virtual DbSet<DriverCar> DriverCars { get; set; }
 
-        public DbSet<Diploma.Models.Entities.User> User { get; set; }
+        public DbSet<User> User { get; set; }
+
+        public DbSet<UserMessage> UserMessages { get; set; }
     }
 }

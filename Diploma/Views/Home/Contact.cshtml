@@ -1,6 +1,9 @@
-﻿@{
+﻿@model Diploma.Models.ViewModels.LeaveMessageViewModel
+
+@{
     ViewData["Title"] = "Contact";
 }
+
 <h2>@ViewData["Title"]</h2>
 
 <address>
@@ -10,3 +13,39 @@
 <address>
     <strong>Support:</strong> <a href="mailto:yehor.chernyshenko@gmail.com">yehor.chernyshenko@gmail.com</a><br />
 </address>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="Home" asp-action="LeaveMessage">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (string.IsNullOrEmpty(ViewBag.Message))
+            {
+                if (!User.Identity.IsAuthenticated) {
+                     <div class="form-group">
+                         <label asp-for="Email" class="control-label"></label>
+                         <input asp-for="Email" class="form-control"/>
+                         <span asp-validation-for="Email" class="text-danger"></span>
+                     </div>
+                     <div class="form-group">
+                         <label asp-for="PhoneNumber" class="control-label"></label>
+                         <input asp-for="PhoneNumber" class="form-control"/>
+                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                     </div>
+                 }
+
+                <div class="form-group">
+                    <label asp-for="Message" class="control-label"></label>
+                    <input asp-for="Message" class="form-control"/>
+                    <span asp-validation-for="Message" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Leave message" class="btn btn-default"/>
+                </div>
+            } else {
+                <h4 style="color:green;">@ViewBag.Message</h4>
+            }
+
+        </form>
+    </div>
+</div>

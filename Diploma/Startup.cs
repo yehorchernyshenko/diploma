@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Diploma.Models;
 using Diploma.Models.Entities;
+using Diploma.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -25,21 +26,24 @@ namespace Diploma
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IApplicationService, ApplicationService>();
+
             services.AddDbContext<ApplicationContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
+                    ServiceLifetime.Singleton);
 
             services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.User.RequireUniqueEmail = true;
+                {
+                    options.User.RequireUniqueEmail = true;
 
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-            })
-            .AddEntityFrameworkStores<ApplicationContext>()
-            .AddDefaultTokenProviders();
+                    options.Password.RequireDigit = true;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequireLowercase = true;
+                })
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddDefaultTokenProviders();
 
             services.AddMvc();
 

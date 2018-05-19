@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -20,5 +21,7 @@ namespace Diploma.Models.Entities
         public string FacebookProfileLink { get; set; }
 
         public string LinkedinProfileLink { get; set; }
+
+        public virtual List<UserMessage> UserMessages { get; set; }
     }
 }
