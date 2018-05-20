@@ -1,0 +1,12 @@
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\bin\Release\netcoreapp2.0\Diploma.deps.json
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\bin\Release\netcoreapp2.0\Diploma.runtimeconfig.json
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\bin\Release\netcoreapp2.0\Diploma.runtimeconfig.dev.json
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\bin\Release\netcoreapp2.0\Diploma.dll
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\bin\Release\netcoreapp2.0\Diploma.pdb
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.csprojResolveAssemblyReference.cache
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.csproj.CoreCompileInputs.cache
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.AssemblyInfoInputs.cache
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.AssemblyInfo.cs
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.dll
+E:\Учеба\4 курс\Диплом\Diploma\Diploma\obj\Release\netcoreapp2.0\Diploma.pdb

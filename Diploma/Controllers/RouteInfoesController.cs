@@ -156,6 +156,7 @@ namespace Diploma.Controllers
                     Price = addRouteViewModel.Price,
                     RouteStatus = RouteStatus.Pending,
                     Capacity = addRouteViewModel.Capacity,
+                    Comment = addRouteViewModel.Comment,
                     DepartureTime = new DateTime(addRouteViewModel.DepartureDate.Year,
                         addRouteViewModel.DepartureDate.Month, addRouteViewModel.DepartureDate.Day,
                         addRouteViewModel.DepartureTime.Hour, addRouteViewModel.DepartureTime.Minute, 0)

@@ -27,5 +27,7 @@ namespace Diploma.Models.ViewModels
 
         [Range(1, int.MaxValue)]
         public int Capacity { get; set; }
+
+        public string Comment { get; set; }
     }
 }
