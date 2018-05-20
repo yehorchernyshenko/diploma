@@ -23,7 +23,7 @@ namespace Diploma.Models.ViewModels
         public Currency Currency { get; set; }
 
         [Display(Name = "Route Length")]
-        public double RouteLength { get; set; } = 0;
+        public double? RouteLength { get; set; } = 0;
 
         [Range(1, int.MaxValue)]
         public int Capacity { get; set; }

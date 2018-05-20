@@ -152,7 +152,7 @@ namespace Diploma.Controllers
                     Currency = addRouteViewModel.Currency,
                     From = addRouteViewModel.From,
                     To = addRouteViewModel.To,
-                    RouteLength = addRouteViewModel.RouteLength,
+                    RouteLength = addRouteViewModel.RouteLength.Value,
                     Price = addRouteViewModel.Price,
                     RouteStatus = RouteStatus.Pending,
                     Capacity = addRouteViewModel.Capacity,
@@ -173,7 +173,7 @@ namespace Diploma.Controllers
 
                 await _context.SaveChangesAsync();
 
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
             return View(addRouteViewModel);
         }
@@ -250,7 +250,7 @@ namespace Diploma.Controllers
                         throw;
                     }
                 }
-                return View("../Home/Index");
+                return RedirectToAction("Index", "Home");
             }
             return View(routeInfo);
         }
@@ -303,7 +303,7 @@ namespace Diploma.Controllers
 
             await _context.SaveChangesAsync();
 
-            return View("../Home/Index");
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task<List<RouteInfo>> GetAppliedPassengersList(Guid routeId)
