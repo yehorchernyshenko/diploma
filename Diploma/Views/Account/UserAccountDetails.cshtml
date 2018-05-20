@@ -71,5 +71,37 @@
     </dl>
 </div>
 <div>
+    @if (User.IsInRole("Admin"))
+    {
+        if (Model.IsAccountVerified == false)
+        {
+            <form asp-controller="Admin" asp-action="VerifyUser">
+                @Html.HiddenFor(model => model.UserId)
+                <div class="form-group">
+                    <input type="submit" value="Verify User" class="btn btn-default" />
+                </div>
+            </form>
+        }
+
+        if (Model.IsBlocked == false)
+        {
+            <form asp-controller="Admin" asp-action="BlockUser">
+                @Html.HiddenFor(model => model.UserId)
+                <div class="form-group">
+                    <input type="submit" value="Block User" class="btn btn-default" />
+                </div>
+            </form>
+        }
+
+        if (Model.IsBlocked == true) {
+            <form asp-controller="Admin" asp-action="UnblockUser">
+                @Html.HiddenFor(model => model.UserId)
+                <div class="form-group">
+                    <input type="submit" value="Unblock User" class="btn btn-default" />
+                </div>
+            </form>
+        }
+    }
+
     <a asp-action="Index" asp-controller="Home">Back to List</a>
 </div>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Diploma.Models.Entities.User>
+
+@{
+    ViewData["Title"] = "Unverified Users";
+}
+
+
+<h2>Unverified Users List</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            Unverified User details link
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                <a class="btn btn-default" asp-controller="Account" asp-action="UserAccountDetails" asp-route-userId="@item.Id">Unverified User Profile Info</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

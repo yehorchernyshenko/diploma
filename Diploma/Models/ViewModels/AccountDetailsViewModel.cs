@@ -5,6 +5,8 @@ namespace Diploma.Models.ViewModels
 {
     public class AccountDetailsViewModel
     {
+        public string UserId { get; set; }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }
@@ -31,6 +33,9 @@ namespace Diploma.Models.ViewModels
 
         [Display(Name = "Account Verified")]
         public bool IsAccountVerified { get; set; }
+
+        [Display(Name = "Is Blocked")]
+        public bool IsBlocked { get; set; }
 
         [Display(Name = "Phone Number")]
         [Phone]

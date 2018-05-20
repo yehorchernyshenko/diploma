@@ -23,9 +23,9 @@ namespace Diploma.Controllers
         private readonly IMapper _mapper;
 
         public AccountController(Microsoft.AspNetCore.Identity.UserManager<User> userManager,
-                                 SignInManager<User> signInManager,
-                                 ApplicationContext context,
-                                 IMapper mapper)
+            SignInManager<User> signInManager,
+            ApplicationContext context,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -78,7 +78,7 @@ namespace Diploma.Controllers
         [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
-            return View(new LoginViewModel { ReturnUrl = returnUrl });
+            return View(new LoginViewModel {ReturnUrl = returnUrl});
         }
 
         [HttpPost]
@@ -88,6 +88,18 @@ namespace Diploma.Controllers
         {
             if (ModelState.IsValid)
             {
+                var user = _context.User.FirstOrDefault(item => item.Email == model.Email);
+
+                if (user != null && user.IsBlocked == true)
+                {
+                    return RedirectToAction("Error", "Home",
+                        new ErrorViewModel
+                        {
+                            ErrorMessage =
+                                "Sorry, your account is blocked. Please use contact us form in order to unblock it."
+                        });
+                }
+
                 var result =
                     await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
@@ -132,9 +144,9 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> UserAccountDetails(Guid userId)
+        public async Task<IActionResult> UserAccountDetails(string userId)
         {
-            var user = await _context.User.FirstAsync(item => item.Id == userId.ToString());
+            var user = await _context.User.FirstAsync(item => item.Id == userId);
 
             var accountDetailsViewModel = _mapper.Map<User, AccountDetailsViewModel>(user);
 
@@ -161,7 +173,7 @@ namespace Diploma.Controllers
                 await _userManager.UpdateAsync(user);
 
                 ViewBag.UpdateSuccessful = true;
-            }  
+            }
 
             return View("AccountDetailsEdit", accountDetailsViewModel);
         }

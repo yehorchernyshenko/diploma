@@ -1,0 +1,17 @@
+﻿@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<p>Hello, Admin!</p>
+
+<a asp-controller="RouteInfoes" asp-action="GetAvailableRoutesList">List of all routes</a>
+<br>
+<a asp-controller="Admin" asp-action="GetUserMessages">See users messages</a>
+<br>
+<a asp-controller="Admin" asp-action="GetUnverifiedUsers">See unverified users</a>
+<br>
+<a asp-controller="Admin" asp-action="GetAllUsers">All users</a>
+<br>
+<form method="post" asp-controller="Account" asp-action="LogOff">
+    <input type="submit" value="Log Off" />
+</form>

@@ -18,6 +18,8 @@ namespace Diploma.Models.Entities
 
         public bool IsAccountVerified { get; set; }
 
+        public bool IsBlocked { get; set; }
+
         public string FacebookProfileLink { get; set; }
 
         public string LinkedinProfileLink { get; set; }

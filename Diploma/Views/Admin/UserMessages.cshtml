@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Diploma.Models.Entities.UserMessage>
+
+@{
+    ViewData["Title"] = "User Messages";
+}
+
+
+<h2>User Messages List</h2>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            User details link
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Message)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @if (@item.User != null) {
+                    <a class="btn btn-default" asp-controller="Account" asp-action="UserAccountDetails" asp-route-userId="@item.User.Id">User Profile Info</a>
+                }
+            </td>
+            <td>
+                @{var userMessage = item.Email ?? item.User.Email;}
+                @Html.DisplayFor(modelItem => userMessage)
+            </td>
+            <td>
+                @{var phoneNumber = item.PhoneNumber ?? item.User.PhoneNumber;}
+                @Html.DisplayFor(modelItem => phoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Message)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
